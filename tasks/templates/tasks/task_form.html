@@ -1,0 +1,49 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<div class="mb-4">
+    <h2 class="fw-bold">Gestion de la tâche</h2>
+    <p class="text-muted">
+        Ajoutez ou modifiez les informations de votre tâche.
+    </p>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label fw-semibold">Titre</label>
+        {{ form.title }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-semibold">Description</label>
+        {{ form.description }}
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-semibold">Date limite</label>
+        {{ form.deadline }}
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label fw-semibold">Statut</label>
+        {{ form.status }}
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <button type="submit" class="btn btn-primary">
+            Enregistrer
+        </button>
+
+        <a href="{% url 'task_list' %}"
+           class="btn btn-light border">
+            Annuler
+        </a>
+
+    </div>
+</form>
+
+{% endblock %}

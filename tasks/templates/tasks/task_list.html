@@ -1,0 +1,141 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="fw-bold mb-1">Mes tâches</h2>
+        <p class="text-muted mb-0">
+            Organisez et suivez vos travaux universitaires.
+        </p>
+    </div>
+
+    <a href="{% url 'task_create' %}"
+       class="btn btn-primary">
+        + Ajouter une tâche
+    </a>
+
+</div>
+
+<div class="row g-3 mb-4">
+
+    <div class="col-md-3">
+        <div class="p-3 border rounded text-center">
+            <h3 class="fw-bold">{{ total }}</h3>
+            <span class="text-muted">Total</span>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="p-3 border rounded text-center">
+            <h3 class="fw-bold">{{ todo }}</h3>
+            <span class="text-muted">À faire</span>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="p-3 border rounded text-center">
+            <h3 class="fw-bold">{{ progress }}</h3>
+            <span class="text-muted">En cours</span>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="p-3 border rounded text-center">
+            <h3 class="fw-bold">{{ done }}</h3>
+            <span class="text-muted">Terminées</span>
+        </div>
+    </div>
+
+</div>
+
+{% for task in tasks %}
+
+<div class="task-card">
+
+    <div class="d-flex justify-content-between align-items-start">
+
+        <div>
+
+            <h5 class="fw-bold">
+                {{ task.title }}
+            </h5>
+
+            <p class="text-muted">
+                {{ task.description|default:"Aucune description" }}
+            </p>
+
+        </div>
+
+
+        {% if task.status == 'done' %}
+
+            <span class="badge bg-success">
+                {{ task.get_status_display }}
+            </span>
+
+        {% elif task.status == 'progress' %}
+
+            <span class="badge bg-warning text-dark">
+                {{ task.get_status_display }}
+            </span>
+
+        {% else %}
+
+            <span class="badge bg-secondary">
+                {{ task.get_status_display }}
+            </span>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+
+        <small class="text-muted">
+            Date limite :
+            <strong>{{ task.deadline|date:"d/m/Y" }}</strong>
+        </small>
+
+
+        <div>
+
+            <a href="{% url 'task_update' task.id %}"
+               class="btn btn-outline-primary btn-sm">
+                Modifier
+            </a>
+
+            <a href="{% url 'task_delete' task.id %}"
+               class="btn btn-outline-danger btn-sm">
+                Supprimer
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% empty %}
+
+<div class="text-center py-5">
+
+    <h4>Aucune tâche</h4>
+
+    <p class="text-muted">
+        Commencez par ajouter votre première tâche.
+    </p>
+
+    <a href="{% url 'task_create' %}"
+       class="btn btn-primary">
+        + Ajouter une tâche
+    </a>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}
